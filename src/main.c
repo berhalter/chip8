@@ -1,8 +1,10 @@
 #include "../include/global.h"
 
 int main(int argc, char const *argv[]) {
-    (void) argc;
-    (void) argv;
-    printf("Hello, world!\n");
+    if (argc != 2) {
+        fprintf(stderr, "Missing arguments. Usage: chip8 file\n");
+        exit(EXIT_FAILURE);
+    }
+    printf("ROM file: %s\n", argv[1]);
     return EXIT_SUCCESS;
 }
