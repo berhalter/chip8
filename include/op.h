@@ -1,6 +1,9 @@
 #include "global.h"
+//It might make sense to merge this file with cpu.h for scope reasons.
 
-/* TODO: format this so that it's easier to read. */
+/* TODO:
+format this so that it's easier to read.
+*/
 
 /* KEY:
  * NNN == Hexadecimal memory address
