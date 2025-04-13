@@ -1,4 +1,4 @@
-#include "op.h"
+#include "../include/op.h"
 
 /* Execute machine language subroutine at address NNN */
 void op_0NNN(uint16_t address) {
