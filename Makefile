@@ -1,12 +1,11 @@
 CC := gcc
-CFLAGS := -O0 -std=c99 -ggdb -D_DEFAULT_SOURCE #-Wall -Wextra -Werror
+CFLAGS := -O0 -std=c99 -ggdb -D_DEFAULT_SOURCE -Wall -Wextra -Werror
 LDFLAGS :=
 SRCS := $(wildcard src/*.c)
 SRC_OBJS := $(SRCS:.c=.o)
 TEST_SRCS := $(wildcard tests/*.c) #only used for $(TESTS)
 #TEST_OBJS := $(TEST_SRCS:.c=.o) #not used
 TESTS := $(basename $(notdir $(TEST_SRCS)))
-
 
 
 all: chip8
@@ -16,7 +15,7 @@ chip8: $(SRC_OBJS)
 
 # Make throws an error when running this if any tests fail, but it does work.
 # Need confirm this, but my current theory is that Criterion returns a non-zero
-# value if tests fail.
+# value if tests fail, so it probably doesn't matter much.
 tests: $(patsubst %, tests/test_%, $(TESTS))
 	$(foreach test, $^, ./$(test))
 

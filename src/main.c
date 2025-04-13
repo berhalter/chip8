@@ -1,6 +1,6 @@
 #include "../include/global.h"
 
-int main(int argc, char const *argv[]) {
+int main(int argc, const char *argv[]) {
     if (argc != 2) {
         fprintf(stderr, "Missing arguments. Usage: chip8 file\n");
         exit(EXIT_FAILURE);

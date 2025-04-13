@@ -1,3 +1,4 @@
+#pragma once
 #include "global.h"
 //NOTE: It might make sense to merge this file with cpu.h for scope reasons.
 
