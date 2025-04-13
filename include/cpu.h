@@ -1,5 +1,6 @@
 #include "global.h"
 
+//remove typedef for clarity?
 typedef struct cpu {
     uint16_t index; /* address/index register */
     uint16_t program_ct;
