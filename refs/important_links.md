@@ -10,3 +10,6 @@ https://github.com/mattmikolay/chip-8/wiki/Mastering-CHIP%E2%80%908
 https://github.com/mattmikolay/chip-8/wiki/CHIP%E2%80%908-Instruction-Set
 https://github.com/tobiasvl/awesome-chip-8?tab=readme-ov-file#emulatorinterpreter-development
 https://emudev.org/system_resources
+
+# ROMS
+https://github.com/Timendus/chip8-test-suite?tab=readme-ov-file
