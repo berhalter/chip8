@@ -1,5 +1,6 @@
 #include "../include/global.h"
 #include "../include/cpu.h"
+#include "../include/instructions.h"
 
 int main(int argc, const char *argv[]) {
     if (argc != 2) {

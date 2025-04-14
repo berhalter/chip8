@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "criterion.h": "c",
-        "cpu.h": "c"
+        "cpu.h": "c",
+        "op.h": "c"
     }
 }

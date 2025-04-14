@@ -1,12 +1,11 @@
 #pragma once
 #include "global.h"
-//NOTE: It might make sense to merge this file with cpu.h for scope reasons.
+#include "../include/cpu.h"
 
-/* TODO:
-format this so that it's easier to read.
-*/
+uint16_t fetch_instruction(cpu *cpu);
+int decode_instruction(uint16_t opcode);
 
-/* KEY:
+/* OPCODES KEY:
  * NNN == Hexadecimal memory address
  * NN  == Hexadecimal byte
  * N   == Hexadecimal nibble
