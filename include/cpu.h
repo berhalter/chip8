@@ -23,5 +23,5 @@ typedef struct cpu {
 
 cpu *init_cpu();
 int load_rom(const char *filename, cpu *cpu);
-void fetch();
-void decode();
+void fetch_instruction();
+int decode_instruction(uint16_t opcode);
