@@ -1,6 +1,6 @@
 CC := gcc
 CFLAGS := -O0 -std=c99 -ggdb -D_DEFAULT_SOURCE -Wall -Wextra -Werror
-LDFLAGS :=
+LDFLAGS := `sdl2-config --cflags --libs`
 SRCS := $(wildcard src/*.c)
 SRC_OBJS := $(SRCS:.c=.o)
 TEST_SRCS := $(wildcard tests/*.c) #only used for $(TESTS)
