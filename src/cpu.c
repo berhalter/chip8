@@ -24,6 +24,9 @@ int load_rom(const char *filename, cpu *cpu) {
         return 2;
     }
     long size = ftell(rom);
+    /* max_size is inaccurate due to the uppermost bytes being reserved on
+       older 4K systems, but I'm unsure as to how much this actually matters.
+       https://en.wikipedia.org/wiki/CHIP-8#Memory */
     long max_size = RAM_SIZE - START_ADDR;
     if (size == 0) {
         fprintf(stderr, "ERROR: ROM file is empty (0B).\n");
@@ -41,8 +44,14 @@ int load_rom(const char *filename, cpu *cpu) {
     return 0;
 }
 
-void fetch_instruction() {
-    return;
+uint16_t fetch_instruction(cpu *cpu) {
+    /* All opcodes occupy 2 bytes of memory. Note that CHIP-8 is big-endian,
+       but x86 is not, so type-casting the array as a pointer won't work here */
+    uint8_t msb = cpu->ram[cpu->program_ct];
+    uint8_t lsb = cpu->ram[cpu->program_ct + 1];
+    uint16_t opcode = (msb << 8) + lsb;
+    cpu->program_ct += 2;
+    return opcode;
 }
 
 int decode_instruction(uint16_t opcode) {

@@ -8,7 +8,8 @@
 #define START_ADDR 0x200
 
 
-//remove typedef for clarity?
+/* This may be easier to work with if it's not being accessed via pointers,
+   especially since only one struct cpu is ever initialized. */
 typedef struct cpu {
     uint16_t index; /* address/index register */
     uint16_t program_ct;
@@ -23,5 +24,5 @@ typedef struct cpu {
 
 cpu *init_cpu();
 int load_rom(const char *filename, cpu *cpu);
-void fetch_instruction();
+uint16_t fetch_instruction(cpu *cpu);
 int decode_instruction(uint16_t opcode);
