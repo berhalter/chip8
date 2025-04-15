@@ -2,8 +2,8 @@
 #include "global.h"
 #include "../include/cpu.h"
 
-uint16_t fetch_instruction(cpu *cpu);
-int decode_instruction(uint16_t opcode);
+uint16_t fetch_instruction(cpu_t *cpu);
+int decode_instruction(uint16_t opcode, cpu_t *cpu);
 
 /* OPCODES KEY:
  * NNN == Hexadecimal memory address
@@ -21,7 +21,7 @@ int decode_instruction(uint16_t opcode);
 void op_0NNN(uint16_t address);
 
 /* Clear the screen */
-void op_00E0();
+void op_00E0(cpu_t *cpu);
 
 /* Return from a subroutine */
 void op_00EE();

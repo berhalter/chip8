@@ -16,7 +16,7 @@ int main(int argc, const char *argv[]) {
 
     /* Consider creating setup functions for readability */
 
-    cpu *cpu = init_cpu();
+    cpu_t *cpu = init_cpu();
     if (cpu == NULL) {
         /* No need to free cpu here since allocation failed. */
         fprintf(stderr, "init_cpu() failed.\n");
@@ -46,18 +46,13 @@ int main(int argc, const char *argv[]) {
     }
 
     bool is_running = true;
-
-    /* for testing out display/scaling; will delete later */
-    cpu->display[0][0] = true;
-    cpu->display[DISPLAY_H - 1][0] = true;
-    cpu->display[0][DISPLAY_W - 1] = true;
-    cpu->display[DISPLAY_H - 1][DISPLAY_W - 1] = true;
-
     while (is_running) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 is_running = false;
+            } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+                op_00E0(cpu);
             }
         }
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);

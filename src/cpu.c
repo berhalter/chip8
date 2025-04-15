@@ -1,8 +1,10 @@
 #include "../include/cpu.h"
 
-cpu *init_cpu() {
-    /* TO-DO: specify when cpu should be freed by the program. */
-    cpu *cpu;
+cpu_t *init_cpu() {
+    /* TO-DO: 
+     * specify when cpu should be freed by the program.
+     * set initial value of display for debugging.*/
+    cpu_t *cpu;
     cpu = calloc(1, sizeof(*cpu));
     if (cpu == NULL) {
         perror("ERROR: Could not initialize CPU.\n");
@@ -12,7 +14,7 @@ cpu *init_cpu() {
     return cpu;
 }
 
-int load_rom(const char *filename, cpu *cpu) {
+int load_rom(const char *filename, cpu_t *cpu) {
     FILE *rom = fopen(filename, "r");
     if (rom == NULL) {
         perror("ERROR: Could not open ROM file.\n");

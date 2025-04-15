@@ -3,7 +3,7 @@
 
 /* if this test fails, you have serious problems. */
 void test_init_cpu() {
-    cpu *cpu;
+    cpu_t *cpu;
     cpu = init_cpu();
     cr_assert_not_null(cpu, "CPU not initalized.");
     return;
