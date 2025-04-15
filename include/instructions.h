@@ -3,7 +3,7 @@
 #include "../include/cpu.h"
 
 uint16_t fetch_instruction(cpu_t *cpu);
-int decode_instruction(uint16_t opcode, cpu_t *cpu);
+int decode_instruction(cpu_t *cpu, uint16_t opcode);
 
 /* OPCODES KEY:
  * NNN == Hexadecimal memory address
@@ -18,6 +18,7 @@ int decode_instruction(uint16_t opcode, cpu_t *cpu);
    function is called inside the switch statement. */
 
 /* Execute machine language subroutine at address NNN */
+///////////////////////////////////////////////////////////////Apparently this one doesn't need to be implemented?
 void op_0NNN(uint16_t address);
 
 /* Clear the screen */

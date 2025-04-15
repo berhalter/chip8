@@ -7,11 +7,12 @@ uint16_t fetch_instruction(cpu_t *cpu) {
     uint8_t msb = cpu->ram[cpu->program_ct];
     uint8_t lsb = cpu->ram[cpu->program_ct + 1];
     uint16_t opcode = (msb << 8) + lsb;
+    //printf("msb:%.2hhx, lsb:%.2hhx, opcode: %.4hx, pc:%.4hx\n", msb, lsb, opcode, cpu->program_ct);
     cpu->program_ct += 2;
     return opcode;
 }
 
-int decode_instruction(uint16_t opcode, cpu_t *cpu) {
+int decode_instruction(cpu_t *cpu, uint16_t opcode) {
     uint16_t address;
     uint8_t vx, vy, nnval, nval;
     int retval = 0;
@@ -232,7 +233,7 @@ int decode_instruction(uint16_t opcode, cpu_t *cpu) {
 /* Execute machine language subroutine at address NNN */
 void op_0NNN(uint16_t address) {
     (void) address;
-    printf("Not implemented.\n");
+    printf("op_0NNN not implemented.\n");
     return;
 }
 
@@ -248,7 +249,7 @@ void op_00E0(cpu_t *cpu) {
 
 /* Return from a subroutine */
 void op_00EE() {
-    printf("Not implemented.\n");
+    printf("op_00EE not implemented.\n");
     return;
 }
 
@@ -261,7 +262,7 @@ void op_1NNN(cpu_t *cpu, uint16_t address) {
 /* Execute subroutine starting at address NNN */
 void op_2NNN(uint16_t address) {
     (void) address;
-    printf("Not implemented.\n");
+    printf("op_2NNN not implemented.\n");
     return;
 }
 
@@ -269,7 +270,7 @@ void op_2NNN(uint16_t address) {
 void op_3XNN(uint8_t vx, uint8_t nnval) {
     (void) vx;
     (void) nnval;
-    printf("Not implemented.\n");
+    printf("op_3XNN not implemented.\n");
     return;
 }
 
@@ -277,7 +278,7 @@ void op_3XNN(uint8_t vx, uint8_t nnval) {
 void op_4XNN(uint8_t vx, uint8_t nnval) {
     (void) vx;
     (void) nnval;
-    printf("Not implemented.\n");
+    printf("op_4XNN not implemented.\n");
     return;
 }
 
@@ -285,7 +286,7 @@ void op_4XNN(uint8_t vx, uint8_t nnval) {
 void op_5XY0(uint8_t vx, uint8_t vy) {
     (void) vx;
     (void) vy;
-    printf("Not implemented.\n");
+    printf("op_5XY0 not implemented.\n");
     return;
 }
 
@@ -305,7 +306,7 @@ void op_7XNN(cpu_t *cpu, uint8_t vx, uint8_t nnval) {
 void op_8XY0(uint8_t vx, uint8_t vy) {
     (void) vx;
     (void) vy;
-    printf("Not implemented.\n");
+    printf("op_8XY0 not implemented.\n");
     return;
 }
 
@@ -313,7 +314,7 @@ void op_8XY0(uint8_t vx, uint8_t vy) {
 void op_8XY1(uint8_t vx, uint8_t vy) {
     (void) vx;
     (void) vy;
-    printf("Not implemented.\n");
+    printf("op_8XY1 not implemented.\n");
     return;
 }
 
@@ -321,7 +322,7 @@ void op_8XY1(uint8_t vx, uint8_t vy) {
 void op_8XY2(uint8_t vx, uint8_t vy) {
     (void) vx;
     (void) vy;
-    printf("Not implemented.\n");
+    printf("op_8XY2 not implemented.\n");
     return;
 }
 
@@ -329,7 +330,7 @@ void op_8XY2(uint8_t vx, uint8_t vy) {
 void op_8XY3(uint8_t vx, uint8_t vy) {
     (void) vx;
     (void) vy;
-    printf("Not implemented.\n");
+    printf("op_8XY3 not implemented.\n");
     return;
 }
 
@@ -339,7 +340,7 @@ void op_8XY3(uint8_t vx, uint8_t vy) {
 void op_8XY4(uint8_t vx, uint8_t vy) {
     (void) vx;
     (void) vy;
-    printf("Not implemented.\n");
+    printf("op_8XY4 not implemented.\n");
     return;
 }
 
@@ -349,7 +350,7 @@ void op_8XY4(uint8_t vx, uint8_t vy) {
 void op_8XY5(uint8_t vx, uint8_t vy) {
     (void) vx;
     (void) vy;
-    printf("Not implemented.\n");
+    printf("op_8XY5 not implemented.\n");
     return;
 }
 
@@ -359,7 +360,7 @@ void op_8XY5(uint8_t vx, uint8_t vy) {
 void op_8XY6(uint8_t vx, uint8_t vy) {
     (void) vx;
     (void) vy;
-    printf("Not implemented.\n");
+    printf("op_8XY6 not implemented.\n");
     return;
 }
 
@@ -369,7 +370,7 @@ void op_8XY6(uint8_t vx, uint8_t vy) {
 void op_8XY7(uint8_t vx, uint8_t vy) {
     (void) vx;
     (void) vy;
-    printf("Not implemented.\n");
+    printf("op_8XY7 not implemented.\n");
     return;
 }
 
@@ -379,7 +380,7 @@ void op_8XY7(uint8_t vx, uint8_t vy) {
 void op_8XYE(uint8_t vx, uint8_t vy) {
     (void) vx;
     (void) vy;
-    printf("Not implemented.\n");
+    printf("op_8XYE not implemented.\n");
     return;
 }
 
@@ -387,7 +388,7 @@ void op_8XYE(uint8_t vx, uint8_t vy) {
 void op_9XY0(uint8_t vx, uint8_t vy) {
     (void) vx;
     (void) vy;
-    printf("Not implemented.\n");
+    printf("op_9XY0 not implemented.\n");
     return;
 }
 
@@ -400,7 +401,7 @@ void op_ANNN(cpu_t *cpu, uint16_t address) {
 /* Jump to address NNN + V0 */
 void op_BNNN(uint16_t address) {
     (void) address;
-    printf("Not implemented.\n");
+    printf("op_BNNN not implemented.\n");
     return;
 }
 
@@ -408,7 +409,7 @@ void op_BNNN(uint16_t address) {
 void op_CXNN(uint8_t vx, uint8_t nnval) {
     (void) vx;
     (void) nnval;
-    printf("Not implemented.\n");
+    printf("op_CXNN not implemented.\n");
     return;
 }
 
@@ -453,63 +454,63 @@ void op_DXYN(cpu_t *cpu, uint8_t vx, uint8_t vy, uint8_t nval) {
 /* Skip the following instruction if the key corresponding to the hex value currently stored in register VX is pressed */
 void op_EX9E(uint8_t vx) {
     (void) vx;
-    printf("Not implemented.\n");
+    printf("op_EX9E not implemented.\n");
     return;
 }
 
 /* Skip the following instruction if the key corresponding to the hex value currently stored in register VX is not pressed */
 void op_EXA1(uint8_t vx) {
     (void) vx;
-    printf("Not implemented.\n");
+    printf("op_EXA1 not implemented.\n");
     return;
 }
 
 /* Store the current value of the delay timer in register VX */
 void op_FX07(uint8_t vx) {
     (void) vx;
-    printf("Not implemented.\n");
+    printf("op_FX07 not implemented.\n");
     return;
 }
 
 /* Wait for a keypress and store the result in register VX */
 void op_FX0A(uint8_t vx) {
     (void) vx;
-    printf("Not implemented.\n");
+    printf("op_FX0A not implemented.\n");
     return;
 }
 
 /* Set the delay timer to the value of register VX */
 void op_FX15(uint8_t vx) {
     (void) vx;
-    printf("Not implemented.\n");
+    printf("op_FX15 not implemented.\n");
     return;
 }
 
 /* Set the sound timer to the value of register VX */
 void op_FX18(uint8_t vx) {
     (void) vx;
-    printf("Not implemented.\n");
+    printf("op_FX18 not implemented.\n");
     return;
 }
 
 /* Add the value stored in register VX to register I */
 void op_FX1E(uint8_t vx) {
     (void) vx;
-    printf("Not implemented.\n");
+    printf("op_FX1E not implemented.\n");
     return;
 }
 
 /* Set I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register VX */
 void op_FX29(uint8_t vx) {
     (void) vx;
-    printf("Not implemented.\n");
+    printf("op_FX29 not implemented.\n");
     return;
 }
 
 /* Store the binary-coded decimal equivalent of the value stored in register VX at addresses I, I + 1, and I + 2 */
 void op_FX33(uint8_t vx) {
     (void) vx;
-    printf("Not implemented.\n");
+    printf("op_FX33 not implemented.\n");
     return;
 }
 
@@ -517,7 +518,7 @@ void op_FX33(uint8_t vx) {
    I is set to I + X + 1 after operation */
 void op_FX55(uint8_t vx) {
     (void) vx;
-    printf("Not implemented.\n");
+    printf("op_FX55 not implemented.\n");
     return;
 }
 
@@ -525,6 +526,6 @@ void op_FX55(uint8_t vx) {
    I is set to I + X + 1 after operation */
 void op_FX65(uint8_t vx) {
     (void) vx;
-    printf("Not implemented.\n");
+    printf("op_FX65 not implemented.\n");
     return;
 }

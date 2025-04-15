@@ -1,6 +1,7 @@
 # General
 https://makefiletutorial.com/
 https://criterion.readthedocs.io/en/master/
+https://www.lipsum.com/ <-- for generating files of a specific size
 
 # CHIP-8
 https://en.wikipedia.org/wiki/Binary-coded_decimal

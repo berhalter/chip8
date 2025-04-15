@@ -24,7 +24,7 @@ int main(int argc, const char *argv[]) {
     }
 
     if (load_rom(argv[1], cpu) != 0) {
-        fprintf(stderr, "load_rom() failed.\n");
+        fprintf(stderr, "load_rom(\"%s\") failed.\n", argv[1]);
         return EXIT_FAILURE;
     }
 
@@ -55,6 +55,13 @@ int main(int argc, const char *argv[]) {
                 op_00E0(cpu); //for debugging; will remove
             }
         }
+
+        uint16_t opcode = fetch_instruction(cpu);
+        if (decode_instruction(cpu, opcode) != 0) {
+            fprintf(stderr, "decode_instruction(0x%x) failed.\n", opcode);
+        }
+        
+
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
         /* Try to find a way to scale this without so much nesting */
@@ -63,10 +70,10 @@ int main(int argc, const char *argv[]) {
                 for (int sy = 0; sy < PIXEL_SCALE; ++sy) {
                     for (int sx = 0; sx < PIXEL_SCALE; ++sx) {
                         if (cpu->display[y][x] == 1) {
-                            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                            SDL_SetRenderDrawColor(renderer, 255, 128, 0, 255);
                             SDL_RenderDrawPoint(renderer, (x*PIXEL_SCALE)+sx, (y*PIXEL_SCALE)+sy);
                         } else {
-                            SDL_SetRenderDrawColor(renderer, 0, 64, 0, 255);
+                            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                             SDL_RenderDrawPoint(renderer, (x*PIXEL_SCALE)+sx, (y*PIXEL_SCALE)+sy);
                         }
                     }

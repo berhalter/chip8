@@ -21,6 +21,5 @@ typedef struct cpu {
     uint8_t display[DISPLAY_H][DISPLAY_W]; /* white if true, black otherwise */
 } cpu_t;
 
-
 cpu_t *init_cpu();
 int load_rom(const char *filename, cpu_t *cpu);
