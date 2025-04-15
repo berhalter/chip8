@@ -23,7 +23,7 @@ void cpu_valid_pc() {
     return;
 }
 
-void cpu_blank_display() {
+void cpu_blank_display() { //perhaps check that all values are correct (stack_pt==0, etc.)
     cpu_t *cpu;
     cpu = init_cpu();
     for (int y = 0; y < DISPLAY_H; ++y) {

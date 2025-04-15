@@ -22,7 +22,6 @@ int main(int argc, const char *argv[]) {
         fprintf(stderr, "init_cpu() failed.\n");
         return EXIT_FAILURE;
     }
-
     if (load_rom(argv[1], cpu) != 0) {
         fprintf(stderr, "load_rom(\"%s\") failed.\n", argv[1]);
         return EXIT_FAILURE;
@@ -32,13 +31,11 @@ int main(int argc, const char *argv[]) {
         fprintf(stderr, "ERROR: Could not initialize SDL. %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
-
     SDL_Window* window = SDL_CreateWindow("Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
     if (window == NULL) {
         fprintf(stderr, "ERROR: Could not create SDL window. %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
-
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == NULL) {
         fprintf(stderr, "ERROR: Could not create SDL renderer. %s\n", SDL_GetError());
@@ -64,7 +61,7 @@ int main(int argc, const char *argv[]) {
 
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
-        /* Try to find a way to scale this without so much nesting */
+        /* Try to find a way to scale this without so much nesting (use rects?) */
         for (int y = 0; y < DISPLAY_H; ++y) {
             for (int x = 0; x < DISPLAY_W; ++x) {
                 for (int sy = 0; sy < PIXEL_SCALE; ++sy) {

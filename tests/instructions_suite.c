@@ -1,0 +1,1 @@
+//testing whether or not decode_instruction calls the correct instruction is difficult, but may be done implicitly by checking for effects of each instruction
