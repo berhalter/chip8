@@ -27,7 +27,7 @@ void op_00E0(cpu_t *cpu);
 void op_00EE();
 
 /* Jump to address NNN */
-void op_1NNN(uint16_t address);
+void op_1NNN(cpu_t *cpu, uint16_t address);
 
 /* Execute subroutine starting at address NNN */
 void op_2NNN(uint16_t address);
@@ -42,10 +42,10 @@ void op_4XNN(uint8_t vx, uint8_t nnval);
 void op_5XY0(uint8_t vx, uint8_t vy);
 
 /* Store number NN in register VX */
-void op_6XNN(uint8_t vx, uint8_t nnval);
+void op_6XNN(cpu_t *cpu, uint8_t vx, uint8_t nnval);
 
 /* Add the value NN to register VX */
-void op_7XNN(uint8_t vx, uint8_t nnval);
+void op_7XNN(cpu_t *cpu, uint8_t vx, uint8_t nnval);
 
 /* Store the value of register VY in register VX */
 void op_8XY0(uint8_t vx, uint8_t vy);
@@ -88,7 +88,7 @@ void op_8XYE(uint8_t vx, uint8_t vy);
 void op_9XY0(uint8_t vx, uint8_t vy);
 
 /* Store memory address NNN in register I */
-void op_ANNN(uint16_t address);
+void op_ANNN(cpu_t *cpu, uint16_t address);
 
 /* Jump to address NNN + V0 */
 void op_BNNN(uint16_t address);
@@ -98,7 +98,7 @@ void op_CXNN(uint8_t vx, uint8_t nnval);
 
 /* Draw a sprite at position VX, VY with N bytes of sprite data starting at the address stored in I
    Set VF to 01 if any set pixels are changed to unset, and 00 otherwise */
-void op_DXYN(uint8_t vx, uint8_t vy, uint8_t nval);
+void op_DXYN(cpu_t *cpu, uint8_t vx, uint8_t vy, uint8_t nval);
 
 /* Skip the following instruction if the key corresponding to the hex value currently stored in register VX is pressed */
 void op_EX9E(uint8_t vx);

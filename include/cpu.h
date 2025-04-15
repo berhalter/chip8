@@ -18,7 +18,7 @@ typedef struct cpu {
     uint8_t ram[RAM_SIZE];
     uint8_t delay_timer;
     uint8_t sound_timer;
-    bool display[DISPLAY_H][DISPLAY_W]; /* white if true, black otherwise */
+    uint8_t display[DISPLAY_H][DISPLAY_W]; /* white if true, black otherwise */
 } cpu_t;
 
 

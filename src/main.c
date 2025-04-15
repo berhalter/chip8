@@ -62,7 +62,7 @@ int main(int argc, const char *argv[]) {
             for (int x = 0; x < DISPLAY_W; ++x) {
                 for (int sy = 0; sy < PIXEL_SCALE; ++sy) {
                     for (int sx = 0; sx < PIXEL_SCALE; ++sx) {
-                        if (cpu->display[y][x]) {
+                        if (cpu->display[y][x] == 1) {
                             SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
                             SDL_RenderDrawPoint(renderer, (x*PIXEL_SCALE)+sx, (y*PIXEL_SCALE)+sy);
                         } else {

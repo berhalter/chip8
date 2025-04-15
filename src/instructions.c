@@ -34,7 +34,7 @@ int decode_instruction(uint16_t opcode, cpu_t *cpu) {
         break;
     case 0x1000:
         address = opcode & 0x0FFF;
-        op_1NNN(address);
+        op_1NNN(cpu, address);
         break;
     case 0x2000:
         address = opcode & 0x0FFF;
@@ -66,12 +66,12 @@ int decode_instruction(uint16_t opcode, cpu_t *cpu) {
     case 0x6000:
         vx = (opcode >> 8) & 0x0F;
         nnval = opcode & 0x00FF;
-        op_6XNN(vx, nnval);
+        op_6XNN(cpu, vx, nnval);
         break;
     case 0x7000:
         vx = (opcode >> 8) & 0x0F;
         nnval = opcode & 0x00FF;
-        op_7XNN(vx, nnval);
+        op_7XNN(cpu, vx, nnval);
         break;
     case 0x8000:
         switch (opcode & 0x000F) {
@@ -141,7 +141,7 @@ int decode_instruction(uint16_t opcode, cpu_t *cpu) {
         break;
     case 0xA000:
         address = opcode & 0x0FFF;
-        op_ANNN(address);
+        op_ANNN(cpu, address);
         break;
     case 0xB000:
         address = opcode & 0x0FFF;
@@ -156,7 +156,7 @@ int decode_instruction(uint16_t opcode, cpu_t *cpu) {
         vx = (opcode >> 8) & 0x0F;
         vy = (opcode >> 4) & 0x0F;
         nval = opcode & 0xF;
-        op_DXYN(vx, vy, nval);
+        op_DXYN(cpu, vx, vy, nval);
         break;
     case 0xE000:
         switch (opcode & 0x00FF) {
@@ -253,9 +253,8 @@ void op_00EE() {
 }
 
 /* Jump to address NNN */
-void op_1NNN(uint16_t address) {
-    (void) address;
-    printf("Not implemented.\n");
+void op_1NNN(cpu_t *cpu, uint16_t address) {
+    cpu->program_ct = address;
     return;
 }
 
@@ -291,18 +290,14 @@ void op_5XY0(uint8_t vx, uint8_t vy) {
 }
 
 /* Store number NN in register VX */
-void op_6XNN(uint8_t vx, uint8_t nnval) {
-    (void) vx;
-    (void) nnval;
-    printf("Not implemented.\n");
+void op_6XNN(cpu_t *cpu, uint8_t vx, uint8_t nnval) {
+    cpu->registers[vx] = nnval;
     return;
 }
 
 /* Add the value NN to register VX */
-void op_7XNN(uint8_t vx, uint8_t nnval) {
-    (void) vx;
-    (void) nnval;
-    printf("Not implemented.\n");
+void op_7XNN(cpu_t *cpu, uint8_t vx, uint8_t nnval) {
+    cpu->registers[vx] += nnval;
     return;
 }
 
@@ -397,9 +392,8 @@ void op_9XY0(uint8_t vx, uint8_t vy) {
 }
 
 /* Store memory address NNN in register I */
-void op_ANNN(uint16_t address) {
-    (void) address;
-    printf("Not implemented.\n");
+void op_ANNN(cpu_t *cpu, uint16_t address) {
+    cpu->index = address;
     return;
 }
 
@@ -420,11 +414,39 @@ void op_CXNN(uint8_t vx, uint8_t nnval) {
 
 /* Draw a sprite at position VX, VY with N bytes of sprite data starting at the address stored in I
    Set VF to 01 if any set pixels are changed to unset, and 00 otherwise */
-void op_DXYN(uint8_t vx, uint8_t vy, uint8_t nval) {
-    (void) vx;
-    (void) vy;
-    (void) nval;
-    printf("Not implemented.\n");
+void op_DXYN(cpu_t *cpu, uint8_t vx, uint8_t vy, uint8_t nval) {
+    /* The starting position should wrap around to the opposite side of the
+       screen if the position coordinate is greater than the dimensions of
+       the screen. NOTE: this does NOT apply once the sprite is being drawn;
+       any sprite data that spills over the screen edge will not be drawn. */
+    int start_x = cpu->registers[vx] % DISPLAY_W;
+    int start_y = cpu->registers[vy] % DISPLAY_H;
+    uint8_t vf = 0xF;
+    cpu->registers[vf] = 0;
+    for (uint8_t row = 0; row < nval; ++row) {
+        int draw_y = start_y + row;
+        if (draw_y >= DISPLAY_H - 1) {
+            break;
+        } else {
+            uint16_t sprite_address = cpu->index + row;
+            uint8_t sprite_data = cpu->ram[sprite_address];
+            int sprite_len = 8;
+            for (int column = 0; column < sprite_len; ++column) {
+                int draw_x = start_x + column;
+                if (draw_x >= DISPLAY_W - 1) {
+                    break;
+                } else {
+                    int shift_amt = sprite_len - column - 1;
+                    uint8_t sprite_px = (sprite_data >> shift_amt) & 0x0001; /* Technically the mask is unnecessary for the first iteration, but is needed afterwards to zero-out higher order bits. */
+                    cpu->display[draw_y][draw_x] = cpu->display[draw_y][draw_x] ^ sprite_px;
+                    if ((sprite_px == 1) && (cpu->display[draw_y][draw_x])) {
+                        cpu->registers[vf] = 1;
+                    }
+                    
+                }
+            }
+        }
+    }
     return;
 }
 
