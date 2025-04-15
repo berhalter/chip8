@@ -48,7 +48,6 @@ int load_rom(const char *filename, cpu_t *cpu) {
     for (long i = 0; i < size; ++i) {
         cpu->ram[START_ADDR + i] = fgetc(rom);
     }
-    //memcpy((cpu->ram + START_ADDR), rom, size);
     if (fclose(rom) != 0) {
         perror("ERROR: Could not close ROM file.\n");
         return 6;
