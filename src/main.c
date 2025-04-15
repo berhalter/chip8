@@ -52,7 +52,7 @@ int main(int argc, const char *argv[]) {
             if (event.type == SDL_QUIT) {
                 is_running = false;
             } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-                op_00E0(cpu);
+                op_00E0(cpu); //for debugging; will remove
             }
         }
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
