@@ -499,15 +499,16 @@ void op_FX18(cpu_t *cpu, uint8_t vx) {
 }
 
 /* Add the value stored in register VX to register I 
-  src: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#fx1e-add-to-index
-  "Unlike other arithmetic instructions, this did not affect VF on overflow on
-  the original COSMAC VIP. However, it seems that some interpreters set VF to 1
-  if I “overflows” from 0FFF to above 1000 (outside the normal addressing
-  range). This wasn’t the case on the original COSMAC VIP, at least, but
-  apparently the CHIP-8 interpreter for Amiga behaved this way. At least one
-  known game, Spacefight 2091!, relies on this behavior. I don’t know of any
-  games that rely on this *not* happening, so perhaps it’s safe to do it like
-  the Amiga interpreter did."*/
+   Note:
+   "Unlike other arithmetic instructions, this did not affect VF on overflow on
+   the original COSMAC VIP. However, it seems that some interpreters set VF to 1
+   if I “overflows” from 0FFF to above 1000 (outside the normal addressing
+   range). This wasn’t the case on the original COSMAC VIP, at least, but
+   apparently the CHIP-8 interpreter for Amiga behaved this way. At least one
+   known game, Spacefight 2091!, relies on this behavior. I don’t know of any
+   games that rely on this *not* happening, so perhaps it’s safe to do it like
+   the Amiga interpreter did."
+   src: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#fx1e-add-to-index */
 void op_FX1E(cpu_t *cpu, uint8_t vx) {
     /* It would probably be fine to just check if vx > 0x0FFF, but this should
        also work in the case that index actually overflows a uint16_t */
@@ -529,28 +530,59 @@ void op_FX29(cpu_t *cpu, uint8_t vx) {
     return;
 }
 
-/* Store the binary-coded decimal equivalent of the value stored in register VX at addresses I, I + 1, and I + 2 */
+/* Store the binary-coded decimal equivalent of the value stored in register VX at addresses I, I + 1, and I + 2
+
+   Note: "For example, if VX contains 156 (or 9C in hexadecimal), it would put
+   the number 1 at the address in I, 5 in address I + 1, and 6 in address I + 2"
+   src: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#fx33-binary-coded-decimal-conversion */
 void op_FX33(cpu_t *cpu, uint8_t vx) {
-    (void) vx;
-    cpu->sound_timer++;
-    printf("op_FX33 not implemented.\n");
+    uint8_t value = cpu->registers[vx];
+    uint16_t max_offset = 2;
+    for (int i = max_offset; i >= 0; --i) {
+        uint16_t address = cpu->index + i;
+        uint8_t digit = value % 10;
+        cpu->ram[address] = digit;
+        value /= 10;
+        printf("val:%hhd, dig:%hhd, addr: %hd, actual: %hhd\n", value, digit, address, cpu->ram[address]);
+    }
     return;
 }
 
 /* Store the values of registers V0 to VX inclusive in memory starting at address I
-   I is set to I + X + 1 after operation */
+   I is set to I + X + 1 after operation **
+   
+   **Note:
+   "The original CHIP-8 interpreter for the COSMAC VIP actually incremented the
+   I register while it worked. Each time it stored or loaded one register, it
+   incremented I. After the instruction was finished, I would end up being set
+   to the new value I + X + 1.
+   However, modern interpreters (starting with CHIP48 and SUPER-CHIP in the early
+   90s) used a temporary variable for indexing, so when the instruction was
+   finished, I would still hold the same value as it did before.
+   If you only pick one behavior, go with the modern one that doesn’t actually
+   change the value of I. This will let you run the common CHIP-8 games you
+   find everywhere, and it’s also what the common test ROMs depend on (the
+   other behavior will fail the tests). But if you want your emulator to run
+   older games from the 1970s or 1980s, you should consider making a
+   configurable option in your emulator to toggle between these behaviors."
+   src: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#fx55-and-fx65-store-and-load-memory */
 void op_FX55(cpu_t *cpu, uint8_t vx) {
-    (void) vx;
-    cpu->sound_timer++;
-    printf("op_FX55 not implemented.\n");
+    for (uint16_t i; i <= vx; ++i) {
+        uint16_t address = cpu->index + i;
+        cpu->ram[address] = cpu->registers[i];
+    }
     return;
 }
 
 /* Fill registers V0 to VX inclusive with the values stored in memory starting at address I
-   I is set to I + X + 1 after operation */
+   I is set to I + X + 1 after operation ** 
+
+   **Note:
+   See comment for op_FX55 */
 void op_FX65(cpu_t *cpu, uint8_t vx) {
-    (void) vx;
-    cpu->sound_timer++;
-    printf("op_FX65 not implemented.\n");
+    for (uint16_t i; i <= vx; ++i) {
+        uint16_t address = cpu->index + i;
+        cpu->registers[i] = cpu->ram[address];
+    }
     return;
 }

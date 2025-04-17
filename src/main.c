@@ -7,6 +7,7 @@
 #define WINDOW_HEIGHT 480
 #define PIXEL_SCALE 8
 
+
 int main(int argc, const char *argv[]) {
     if (argc != 2) {
         fprintf(stderr, "Missing arguments. Usage: chip8 file\n");

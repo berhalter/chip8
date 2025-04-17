@@ -2,9 +2,9 @@
 https://makefiletutorial.com/
 https://criterion.readthedocs.io/en/master/
 https://www.lipsum.com/ <-- for generating files of a specific size
+https://en.wikipedia.org/wiki/Binary-coded_decimal
 
 # CHIP-8
-https://en.wikipedia.org/wiki/Binary-coded_decimal
 https://en.wikipedia.org/wiki/CHIP-8
 https://emudev.org/system_resources
 https://github.com/mattmikolay/chip-8/wiki/CHIP%E2%80%908-Technical-Reference
@@ -16,3 +16,4 @@ https://jackson-s.me/2019/07/13/Chip-8-Instruction-Scheduling-and-Frequency.html
 
 # ROMS
 https://github.com/Timendus/chip8-test-suite?tab=readme-ov-file
+https://johnearnest.github.io/chip8Archive/?sort=platform
