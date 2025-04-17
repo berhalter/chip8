@@ -49,9 +49,7 @@ int main(int argc, const char *argv[]) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 is_running = false;
-            } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-                op_00E0(cpu); //for debugging; will remove
-            }
+            } 
         }
 
         uint16_t opcode = fetch_instruction(cpu);
