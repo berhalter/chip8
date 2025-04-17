@@ -14,6 +14,8 @@ cpu_t *init_cpu() {
         fprintf(stderr, "set_font() failed.\n");
         return NULL;
     }
+    //for debugging using 5-quirks.ch8 and 6-keypad.ch8:
+    cpu->ram[0x1FF] = 1;
     return cpu;
 }
 

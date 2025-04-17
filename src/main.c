@@ -25,21 +25,29 @@ int main(int argc, const char *argv[]) {
     }
     if (load_rom(argv[1], cpu) != 0) {
         fprintf(stderr, "load_rom(\"%s\") failed.\n", argv[1]);
+        free(cpu);
+        cpu = NULL;
         return EXIT_FAILURE;
     }
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         fprintf(stderr, "ERROR: Could not initialize SDL. %s\n", SDL_GetError());
+        free(cpu);
+        cpu = NULL;
         return EXIT_FAILURE;
     }
     SDL_Window* window = SDL_CreateWindow("Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
     if (window == NULL) {
         fprintf(stderr, "ERROR: Could not create SDL window. %s\n", SDL_GetError());
+        free(cpu);
+        cpu = NULL;
         return EXIT_FAILURE;
     }
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == NULL) {
         fprintf(stderr, "ERROR: Could not create SDL renderer. %s\n", SDL_GetError());
+        free(cpu);
+        cpu = NULL;
         return EXIT_FAILURE;
     }
 
@@ -193,8 +201,9 @@ int main(int argc, const char *argv[]) {
             
         }
         SDL_RenderPresent(renderer);
-        decrement_timers(cpu);
     }
+    free(cpu);
+    cpu = NULL;
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
