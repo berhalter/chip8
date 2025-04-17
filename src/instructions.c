@@ -233,7 +233,7 @@ int decode_instruction(cpu_t *cpu, uint16_t opcode) {
 /* Execute machine language subroutine at address NNN */
 void op_0NNN(uint16_t address) {
     (void) address;
-    printf("op_0NNN not implemented.\n");
+    printf("op_0NNN should not be implemented.\n");
     return;
 }
 
@@ -458,17 +458,17 @@ void op_DXYN(cpu_t *cpu, uint8_t vx, uint8_t vy, uint8_t nval) {
 
 /* Skip the following instruction if the key corresponding to the hex value currently stored in register VX is pressed */
 void op_EX9E(cpu_t *cpu, uint8_t vx) {
-    (void) vx;
-    cpu->sound_timer++;
-    printf("op_EX9E not implemented.\n");
+    if (cpu->is_key_pressed[vx]) {
+        cpu->program_ct += 4;
+    }
     return;
 }
 
 /* Skip the following instruction if the key corresponding to the hex value currently stored in register VX is not pressed */
 void op_EXA1(cpu_t *cpu, uint8_t vx) {
-    (void) vx;
-    cpu->sound_timer++;
-    printf("op_EXA1 not implemented.\n");
+    if (!(cpu->is_key_pressed[vx])) {
+        cpu->program_ct += 4;
+    }
     return;
 }
 
@@ -478,11 +478,21 @@ void op_FX07(cpu_t *cpu, uint8_t vx) {
     return;
 }
 
-/* Wait for a keypress and store the result in register VX */
+/* Wait for a keypress and store the result in register VX 
+   Note:
+   "On the original COSMAC VIP, the key was only registered when it was pressed and then released."
+   src: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#fx0a-get-key */
 void op_FX0A(cpu_t *cpu, uint8_t vx) {
-    (void) vx;
-    cpu->sound_timer++;
-    printf("op_FX0A not implemented.\n");
+    bool any_key_pressed = false;
+    for (int i = 0; i < KEY_COUNT; ++i) {
+        if (cpu->is_key_pressed[i]) {
+            cpu->registers[vx] = i;
+            any_key_pressed = true;
+        }
+    }
+    if (!any_key_pressed) {
+        cpu->program_ct -= 2;
+    } 
     return;
 }
 

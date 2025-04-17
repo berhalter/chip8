@@ -4,7 +4,7 @@ cpu_t *init_cpu() {
     /* TO-DO: 
      * specify when cpu should be freed by the program. */
     cpu_t *cpu;
-    cpu = calloc(1, sizeof(*cpu));
+    cpu = calloc(1, sizeof(*cpu)); /* barring the program counter and font data, it's best if every cpu member starts at 0. */
     if (cpu == NULL) {
         perror("ERROR: Could not initialize CPU.\n");
         return NULL;
@@ -81,7 +81,7 @@ int set_font(cpu_t *cpu) {
                       0xF0, 0x80, 0xF0, 0x80, 0xF0,      // E
                       0xF0, 0x80, 0xF0, 0x80, 0x80};     // F
     int sprite_size = 5;
-    for (int i = 0; i <= 0xF; ++i) {
+    for (int i = 0; i < KEY_COUNT; ++i) {
         uint16_t address = i * sprite_size;
         cpu->font_addr[i] = address;
         memcpy(&(cpu->ram[address]), &font[address], sprite_size);

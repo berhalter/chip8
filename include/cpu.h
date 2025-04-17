@@ -8,6 +8,7 @@
 #define START_ADDR 0x200
 #define DISPLAY_W 64
 #define DISPLAY_H 32
+#define KEY_COUNT 16
 
 typedef struct cpu {
     uint16_t index; /* index register, used by some instructions to store addresses */
@@ -19,7 +20,8 @@ typedef struct cpu {
     uint8_t delay_timer;
     uint8_t sound_timer;
     uint8_t display[DISPLAY_H][DISPLAY_W]; /* on = 1, off = 0 */
-    uint8_t font_addr[0xF]; /* makes op_FX29 less annoying, see implementation in cpu.c for details */
+    uint8_t font_addr[KEY_COUNT]; /* makes op_FX29 less annoying, see set_font() implementation in cpu.c for details */
+    bool is_key_pressed[KEY_COUNT];
 } cpu_t;
 
 cpu_t *init_cpu();

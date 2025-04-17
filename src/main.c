@@ -47,9 +47,122 @@ int main(int argc, const char *argv[]) {
     while (is_running) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
+            switch (event.type) {
+            case SDL_QUIT:
                 is_running = false;
-            } 
+                break;
+            //this is incredibly crude, will consider fixing later
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_1:
+                    cpu->is_key_pressed[0x1] = true;
+                    break;
+                case SDL_SCANCODE_2:
+                    cpu->is_key_pressed[0x2] = true;
+                    break;
+                case SDL_SCANCODE_3:
+                    cpu->is_key_pressed[0x3] = true;
+                    break;
+                case SDL_SCANCODE_4:
+                    cpu->is_key_pressed[0xC] = true;
+                    break;
+                case SDL_SCANCODE_Q:
+                    cpu->is_key_pressed[0x4] = true;
+                    break;
+                case SDL_SCANCODE_W:
+                    cpu->is_key_pressed[0x5] = true;
+                    break;
+                case SDL_SCANCODE_E:
+                    cpu->is_key_pressed[0x6] = true;
+                    break;
+                case SDL_SCANCODE_R:
+                    cpu->is_key_pressed[0xD] = true;
+                    break;
+                case SDL_SCANCODE_A:
+                    cpu->is_key_pressed[0x7] = true;
+                    break;
+                case SDL_SCANCODE_S:
+                    cpu->is_key_pressed[0x8] = true;
+                    break;
+                case SDL_SCANCODE_D:
+                    cpu->is_key_pressed[0x9] = true;
+                    break;
+                case SDL_SCANCODE_F:
+                    cpu->is_key_pressed[0xE] = true;
+                    break;
+                case SDL_SCANCODE_Z:
+                    cpu->is_key_pressed[0xA] = true;
+                    break;    
+                case SDL_SCANCODE_X:
+                    cpu->is_key_pressed[0x0] = true;
+                    break;
+                case SDL_SCANCODE_C:
+                    cpu->is_key_pressed[0xB] = true;
+                    break;
+                case SDL_SCANCODE_V:
+                    cpu->is_key_pressed[0xF] = true;
+                    break;
+                default:
+                    break;
+                }
+                break;
+            case SDL_KEYUP:
+                switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_1:
+                    cpu->is_key_pressed[0x1] = false;
+                    break;
+                case SDL_SCANCODE_2:
+                    cpu->is_key_pressed[0x2] = false;
+                    break;
+                case SDL_SCANCODE_3:
+                    cpu->is_key_pressed[0x3] = false;
+                    break;
+                case SDL_SCANCODE_4:
+                    cpu->is_key_pressed[0xC] = false;
+                    break;
+                case SDL_SCANCODE_Q:
+                    cpu->is_key_pressed[0x4] = false;
+                    break;
+                case SDL_SCANCODE_W:
+                    cpu->is_key_pressed[0x5] = false;
+                    break;
+                case SDL_SCANCODE_E:
+                    cpu->is_key_pressed[0x6] = false;
+                    break;
+                case SDL_SCANCODE_R:
+                    cpu->is_key_pressed[0xD] = false;
+                    break;
+                case SDL_SCANCODE_A:
+                    cpu->is_key_pressed[0x7] = false;
+                    break;
+                case SDL_SCANCODE_S:
+                    cpu->is_key_pressed[0x8] = false;
+                    break;
+                case SDL_SCANCODE_D:
+                    cpu->is_key_pressed[0x9] = false;
+                    break;
+                case SDL_SCANCODE_F:
+                    cpu->is_key_pressed[0xE] = false;
+                    break;
+                case SDL_SCANCODE_Z:
+                    cpu->is_key_pressed[0xA] = false;
+                    break;    
+                case SDL_SCANCODE_X:
+                    cpu->is_key_pressed[0x0] = false;
+                    break;
+                case SDL_SCANCODE_C:
+                    cpu->is_key_pressed[0xB] = false;
+                    break;
+                case SDL_SCANCODE_V:
+                    cpu->is_key_pressed[0xF] = false;
+                    break;
+                default:
+                    break;
+                }
+                break;
+            default:
+                break;
+            }
         }
 
         uint16_t opcode = fetch_instruction(cpu);
