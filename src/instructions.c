@@ -522,11 +522,10 @@ void op_FX1E(cpu_t *cpu, uint8_t vx) {
     return;
 }
 
-/* Set I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register VX */
+/* Set I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register VX 
+   Note: See comments for set_font() in cpu.c for implementation details. */
 void op_FX29(cpu_t *cpu, uint8_t vx) {
-    (void) vx;
-    cpu->sound_timer++;
-    printf("op_FX29 not implemented.\n");
+    cpu->index = cpu->font_addr[cpu->registers[vx]];
     return;
 }
 

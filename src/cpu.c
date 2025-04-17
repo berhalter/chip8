@@ -59,6 +59,10 @@ int load_rom(const char *filename, cpu_t *cpu) {
     return 0;
 }
 
+/* Places font data in memory and stores the address where each sprite is
+   located in cpu->font_addr[], where each hexadecimal index of font_addr
+   corresponds to a sprite in the font (e.g., Sprite data for the character
+   'A' is begins at the memory address stored in font_addr[0xA])). */
 int set_font(cpu_t *cpu) {
     uint8_t font[] = {0xF0, 0x90, 0x90, 0x90, 0xF0,      // 0
                       0x20, 0x60, 0x20, 0x20, 0x70,      // 1

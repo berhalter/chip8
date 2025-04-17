@@ -19,7 +19,7 @@ typedef struct cpu {
     uint8_t delay_timer;
     uint8_t sound_timer;
     uint8_t display[DISPLAY_H][DISPLAY_W]; /* on = 1, off = 0 */
-    uint8_t font_addr[0xF]; /* makes op_FX29 less annoying */
+    uint8_t font_addr[0xF]; /* makes op_FX29 less annoying, see implementation in cpu.c for details */
 } cpu_t;
 
 cpu_t *init_cpu();
