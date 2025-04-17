@@ -88,3 +88,12 @@ int set_font(cpu_t *cpu) {
     }
     return 0;
 }
+
+void decrement_timers(cpu_t *cpu) {
+    if (cpu->delay_timer > 0) {
+        --(cpu->delay_timer);
+    }
+    if (cpu->sound_timer > 0) {
+        --(cpu->sound_timer);
+    }
+}

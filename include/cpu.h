@@ -27,3 +27,4 @@ typedef struct cpu {
 cpu_t *init_cpu();
 int load_rom(const char *filename, cpu_t *cpu);
 int set_font(cpu_t *cpu);
+void decrement_timers(cpu_t *cpu);

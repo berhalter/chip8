@@ -332,28 +332,34 @@ void op_8XY3(cpu_t *cpu, uint8_t vx, uint8_t vy) {
    Set VF to 01 if a carry occurs
    Set VF to 00 if a carry does not occur */
 void op_8XY4(cpu_t *cpu, uint8_t vx, uint8_t vy) {
-    uint8_t no_carry_max = UINT8_MAX - cpu->registers[vx];
     uint8_t vf = 0x0F;
-    if (cpu->registers[vy] > no_carry_max) {
+    uint8_t x_val = cpu->registers[vx];
+    uint8_t y_val = cpu->registers[vy];
+    uint8_t no_carry_max = UINT8_MAX - x_val;
+    cpu->registers[vx] += y_val;
+    /* VF must be set AFTER the calculation in case VX == VF */
+    if (y_val > no_carry_max) {
         cpu->registers[vf] = 1;
     } else {
         cpu->registers[vf] = 0;
     }
-    cpu->registers[vx] += cpu->registers[vy];
     return;
 }
 
 /* Subtract the value of register VY from register VX
-   Set VF to 00 if a borrow occurs
-   Set VF to 01 if a borrow does not occur */
+Set VF to 00 if a borrow occurs
+Set VF to 01 if a borrow does not occur */
 void op_8XY5(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     uint8_t vf = 0x0F;
-    if (cpu->registers[vy] > cpu->registers[vx]) {
+    uint8_t x_val = cpu->registers[vx];
+    uint8_t y_val = cpu->registers[vy];
+    cpu->registers[vx] -= y_val;
+    /* VF must be set AFTER the calculation in case VX == VF */
+    if (y_val > x_val) {
         cpu->registers[vf] = 0;
     } else {
         cpu->registers[vf] = 1;
     }
-    cpu->registers[vx] -= cpu->registers[vy];
     return;
 }
 
@@ -362,8 +368,10 @@ void op_8XY5(cpu_t *cpu, uint8_t vx, uint8_t vy) {
    VY is unchanged */
 void op_8XY6(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     uint8_t vf = 0x0F;
-    cpu->registers[vf] = cpu->registers[vy] & 0x01;
-    cpu->registers[vx] = cpu->registers[vy] >> 1;
+    uint8_t y_val = cpu->registers[vy];
+    cpu->registers[vx] = y_val >> 1;
+    /* VF must be set AFTER the calculation in case VX == VF */
+    cpu->registers[vf] = y_val & 0x01;
     return;
 }
 
@@ -372,12 +380,15 @@ void op_8XY6(cpu_t *cpu, uint8_t vx, uint8_t vy) {
    Set VF to 01 if a borrow does not occur*/
 void op_8XY7(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     uint8_t vf = 0x0F;
-    if (cpu->registers[vx] > cpu->registers[vy]) {
+    uint8_t x_val = cpu->registers[vx];
+    uint8_t y_val = cpu->registers[vy];
+    cpu->registers[vx] = y_val - x_val;
+    /* VF must be set AFTER the calculation in case VX == VF */
+    if (x_val > y_val) {
         cpu->registers[vf] = 0;
     } else {
         cpu->registers[vf] = 1;
     }
-    cpu->registers[vx] = cpu->registers[vy] - cpu->registers[vx];
     return;
 }
 
@@ -386,8 +397,10 @@ void op_8XY7(cpu_t *cpu, uint8_t vx, uint8_t vy) {
    VY is unchanged*/
 void op_8XYE(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     uint8_t vf = 0x0F;
-    cpu->registers[vf] = cpu->registers[vy] & 0x80;
-    cpu->registers[vx] = cpu->registers[vy] << 1;
+    uint8_t y_val = cpu->registers[vy];
+    cpu->registers[vx] = y_val << 1;
+    /* VF must be set AFTER the calculation in case VX == VF */
+    cpu->registers[vf] = (y_val & 0x80) >> 7;
     return;
 }
 

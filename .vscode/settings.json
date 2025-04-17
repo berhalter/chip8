@@ -5,6 +5,7 @@
         "op.h": "c",
         "sdl.h": "c",
         "global.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "instructions.h": "c"
     }
 }

@@ -3,9 +3,9 @@
 #include "../include/cpu.h"
 #include "../include/instructions.h"
 
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 480
 #define PIXEL_SCALE 8
+#define WINDOW_WIDTH (DISPLAY_W * PIXEL_SCALE)
+#define WINDOW_HEIGHT (DISPLAY_H * PIXEL_SCALE)
 
 
 int main(int argc, const char *argv[]) {
@@ -173,6 +173,7 @@ int main(int argc, const char *argv[]) {
 
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
+
         /* Try to find a way to scale this without so much nesting (use rects?) */
         for (int y = 0; y < DISPLAY_H; ++y) {
             for (int x = 0; x < DISPLAY_W; ++x) {
@@ -192,6 +193,7 @@ int main(int argc, const char *argv[]) {
             
         }
         SDL_RenderPresent(renderer);
+        decrement_timers(cpu);
     }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
