@@ -552,7 +552,6 @@ void op_FX33(cpu_t *cpu, uint8_t vx) {
         uint8_t digit = value % 10;
         cpu->ram[address] = digit;
         value /= 10;
-        printf("val:%hhd, dig:%hhd, addr: %hd, actual: %hhd\n", value, digit, address, cpu->ram[address]);
     }
     return;
 }
@@ -576,7 +575,7 @@ void op_FX33(cpu_t *cpu, uint8_t vx) {
    configurable option in your emulator to toggle between these behaviors."
    src: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#fx55-and-fx65-store-and-load-memory */
 void op_FX55(cpu_t *cpu, uint8_t vx) {
-    for (uint16_t i; i <= vx; ++i) {
+    for (uint16_t i = 0; i <= vx; ++i) {
         uint16_t address = cpu->index + i;
         cpu->ram[address] = cpu->registers[i];
     }
@@ -589,7 +588,7 @@ void op_FX55(cpu_t *cpu, uint8_t vx) {
    **Note:
    See comment for op_FX55 */
 void op_FX65(cpu_t *cpu, uint8_t vx) {
-    for (uint16_t i; i <= vx; ++i) {
+    for (uint16_t i = 0; i <= vx; ++i) {
         uint16_t address = cpu->index + i;
         cpu->registers[i] = cpu->ram[address];
     }
