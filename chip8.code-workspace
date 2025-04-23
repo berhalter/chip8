@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"criterion.h": "c",
+			"cpu.h": "c",
+			"op.h": "c",
+			"sdl.h": "c",
+			"global.h": "c",
+			"string.h": "c",
+			"instructions.h": "c"
+		}
+	}
+}
