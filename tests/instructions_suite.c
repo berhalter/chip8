@@ -48,6 +48,14 @@ void op_4XNN_is_not_equal() {
     return;
 }
 
+void op_5XY0_is_equal() {
+    return;
+}
+
+void op_5XY0_is_not_equal() {
+    return;
+}
+
 Test(fetch_decode, test0) { fetch_is_big_endian(); }
 Test(fetch_decode, test1) { decode_invalid_opcode(); }
 
@@ -69,7 +77,8 @@ Test(op_3XNN, test1) { op_3XNN_is_not_equal(); }
 Test(op_4XNN, test0) { op_4XNN_is_equal(); }
 Test(op_4XNN, test1) { op_4XNN_is_not_equal(); }
 
-Test(op_5XY0, test0) { printf("No tests yet!\n"); }
+Test(op_5XY0, test0) { op_5XY0_is_equal(); }
+Test(op_5XY0, test1) { op_5XY0_is_not_equal(); }
 
 Test(op_6XNN, test0) { printf("No tests yet!\n"); }
 
