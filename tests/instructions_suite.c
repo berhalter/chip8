@@ -55,7 +55,14 @@ void op_3XNN_is_equal() {
 }
 
 void op_3XNN_is_not_equal() {
-    return;
+    uint8_t vx = 0;
+    uint8_t nnval = 123;
+    cpu->registers[vx] = 1;
+    uint16_t pc = cpu->program_ct;
+    op_3XNN(cpu, vx, nnval);
+    uint16_t actual = cpu->program_ct;
+    uint16_t expected = pc;
+    cr_assert_eq(actual, expected, "op_3XNN_is_not_equal() failed.\nExpected: 0x%hx\nActual: 0x%hx\n", expected, actual);
 }
 
 void op_4XNN_is_equal() {
