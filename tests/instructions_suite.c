@@ -66,19 +66,50 @@ void op_3XNN_is_not_equal() {
 }
 
 void op_4XNN_is_equal() {
-    return;
+    uint8_t vx = 0;
+    uint8_t nnval = 123;
+    cpu->registers[vx] = nnval;
+    uint16_t pc = cpu->program_ct;
+    op_4XNN(cpu, vx, nnval);
+    uint16_t actual = cpu->program_ct;
+    uint16_t expected = pc;
+    cr_assert_eq(actual, expected, "op_4XNN_is_equal() failed.\nExpected: 0x%hx\nActual: 0x%hx\n", expected, actual);
 }
 
 void op_4XNN_is_not_equal() {
-    return;
+    uint8_t vx = 0;
+    uint8_t nnval = 123;
+    cpu->registers[vx] = 1;
+    uint16_t pc = cpu->program_ct;
+    op_4XNN(cpu, vx, nnval);
+    uint16_t actual = cpu->program_ct;
+    uint16_t expected = pc + 2;
+    cr_assert_eq(actual, expected, "op_4XNN_is_not_equal() failed.\nExpected: 0x%hx\nActual: 0x%hx\n", expected, actual);
 }
 
 void op_5XY0_is_equal() {
-    return;
+    uint8_t vx = 0;
+    uint8_t vy = 1;
+    uint8_t val = 100;
+    cpu->registers[vx] = val;
+    cpu->registers[vy] = val;
+    uint16_t pc = cpu->program_ct;
+    op_5XY0(cpu, vx, vy);
+    uint16_t actual = cpu->program_ct;
+    uint16_t expected = pc + 2;
+    cr_assert_eq(actual, expected, "op_5XY0_is_equal() failed.\nExpected: 0x%hx\nActual: 0x%hx\n", expected, actual);
 }
 
 void op_5XY0_is_not_equal() {
-    return;
+    uint8_t vx = 0;
+    uint8_t vy = 1;
+    cpu->registers[vx] = 100;
+    cpu->registers[vy] = 99;
+    uint16_t pc = cpu->program_ct;
+    op_5XY0(cpu, vx, vy);
+    uint16_t actual = cpu->program_ct;
+    uint16_t expected = pc;
+    cr_assert_eq(actual, expected, "op_5XY0_is_not_equal() failed.\nExpected: 0x%hx\nActual: 0x%hx\n", expected, actual);
 }
 
 Test(fetch_decode, test0) { fetch_is_big_endian(); }
@@ -99,11 +130,11 @@ Test(op_2NNN, test0) { printf("No tests yet!\n"); }
 Test(op_3XNN, test0, .init = setup, .fini = teardown) { op_3XNN_is_equal(); }
 Test(op_3XNN, test1, .init = setup, .fini = teardown) { op_3XNN_is_not_equal(); }
 
-Test(op_4XNN, test0) { op_4XNN_is_equal(); }
-Test(op_4XNN, test1) { op_4XNN_is_not_equal(); }
+Test(op_4XNN, test0, .init = setup, .fini = teardown) { op_4XNN_is_equal(); }
+Test(op_4XNN, test1, .init = setup, .fini = teardown) { op_4XNN_is_not_equal(); }
 
-Test(op_5XY0, test0) { op_5XY0_is_equal(); }
-Test(op_5XY0, test1) { op_5XY0_is_not_equal(); }
+Test(op_5XY0, test0, .init = setup, .fini = teardown) { op_5XY0_is_equal(); }
+Test(op_5XY0, test1, .init = setup, .fini = teardown) { op_5XY0_is_not_equal(); }
 
 Test(op_6XNN, test0) { printf("No tests yet!\n"); }
 
