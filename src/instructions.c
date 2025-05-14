@@ -234,7 +234,6 @@ int decode_instruction(cpu_t *cpu, uint16_t opcode) {
 void op_0NNN(uint16_t address) {
     (void) address;
     printf("op_0NNN should not be implemented.\n");
-    return;
 }
 
 /* Clear the screen */
@@ -244,20 +243,19 @@ void op_00E0(cpu_t *cpu) {
             cpu->display[y][x] = 0;
         }
     }
-    return;
 }
 
 /* Return from a subroutine */
 void op_00EE(cpu_t *cpu) {
     cpu->program_ct = cpu->stack[cpu->stack_ptr];
-    (cpu->stack_ptr)--;
-    return;
+    if (cpu->stack_ptr > 0) {
+        (cpu->stack_ptr)--;
+    }
 }
 
 /* Jump to address NNN */
 void op_1NNN(cpu_t *cpu, uint16_t address) {
     cpu->program_ct = address;
-    return;
 }
 
 /* Execute subroutine starting at address NNN */
@@ -265,7 +263,6 @@ void op_2NNN(cpu_t *cpu, uint16_t address) {
     (cpu->stack_ptr)++;
     cpu->stack[cpu->stack_ptr] = cpu->program_ct;
     cpu->program_ct = address;
-    return;
 }
 
 /* Skip the following instruction if the value of register VX equals NN  */
@@ -273,7 +270,6 @@ void op_3XNN(cpu_t *cpu, uint8_t vx, uint8_t nnval) {
     if (cpu->registers[vx] == nnval) {
         cpu->program_ct += 2;
     }
-    return;
 }
 
 /* Skip the following instruction if the value of register VX is not equal to NN */
@@ -281,7 +277,6 @@ void op_4XNN(cpu_t *cpu, uint8_t vx, uint8_t nnval) {
     if (cpu->registers[vx] != nnval) {
         cpu->program_ct += 2;
     }
-    return;
 }
 
 /* Skip the following instruction if the value of register VX is equal to the value of register VY */
@@ -289,43 +284,36 @@ void op_5XY0(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     if (cpu->registers[vx] == cpu->registers[vy]) {
         cpu->program_ct += 2;
     }
-    return;
 }
 
 /* Store number NN in register VX */
 void op_6XNN(cpu_t *cpu, uint8_t vx, uint8_t nnval) {
     cpu->registers[vx] = nnval;
-    return;
 }
 
 /* Add the value NN to register VX */
 void op_7XNN(cpu_t *cpu, uint8_t vx, uint8_t nnval) {
     cpu->registers[vx] += nnval;
-    return;
 }
 
 /* Store the value of register VY in register VX */
 void op_8XY0(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     cpu->registers[vx] = cpu->registers[vy];
-    return;
 }
 
 /* Set VX to VX OR VY */
 void op_8XY1(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     cpu->registers[vx] |= cpu->registers[vy];
-    return;
 }
 
 /* Set VX to VX AND VY */
 void op_8XY2(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     cpu->registers[vx] &= cpu->registers[vy];
-    return;
 }
 
 /* Set VX to VX XOR VY */
 void op_8XY3(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     cpu->registers[vx] ^= cpu->registers[vy];
-    return;
 }
 
 /* Add the value of register VY to register VX
@@ -343,7 +331,6 @@ void op_8XY4(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     } else {
         cpu->registers[vf] = 0;
     }
-    return;
 }
 
 /* Subtract the value of register VY from register VX
@@ -360,7 +347,6 @@ void op_8XY5(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     } else {
         cpu->registers[vf] = 1;
     }
-    return;
 }
 
 /* Store the value of register VY shifted right one bit in register VX
@@ -372,7 +358,6 @@ void op_8XY6(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     cpu->registers[vx] = y_val >> 1;
     /* VF must be set AFTER the calculation in case VX == VF */
     cpu->registers[vf] = y_val & 0x01;
-    return;
 }
 
 /* Set register VX to the value of VY minus VX
@@ -389,7 +374,6 @@ void op_8XY7(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     } else {
         cpu->registers[vf] = 1;
     }
-    return;
 }
 
 /* Store the value of register VY shifted left one bit in register VX
@@ -401,7 +385,6 @@ void op_8XYE(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     cpu->registers[vx] = y_val << 1;
     /* VF must be set AFTER the calculation in case VX == VF */
     cpu->registers[vf] = (y_val & 0x80) >> 7;
-    return;
 }
 
 /* Skip the following instruction if the value of register VX is not equal to the value of register VY */
@@ -409,26 +392,22 @@ void op_9XY0(cpu_t *cpu, uint8_t vx, uint8_t vy) {
     if (cpu->registers[vx] != cpu->registers[vy]) {
         cpu->program_ct += 2;
     }
-    return;
 }
 
 /* Store memory address NNN in register I */
 void op_ANNN(cpu_t *cpu, uint16_t address) {
     cpu->index = address;
-    return;
 }
 
 /* Jump to address NNN + V0 */
 void op_BNNN(cpu_t *cpu, uint16_t address) {
     uint8_t v0 = 0x00;
     cpu->program_ct = address + cpu->registers[v0];
-    return;
 }
 
 /* Set VX to a random number with a mask of NN */
 void op_CXNN(cpu_t *cpu, uint8_t vx, uint8_t nnval) {
     cpu->registers[vx] = rand() & nnval;
-    return;
 }
 
 /* Draw a sprite at position VX, VY with N bytes of sprite data starting at the address stored in I
@@ -466,7 +445,6 @@ void op_DXYN(cpu_t *cpu, uint8_t vx, uint8_t vy, uint8_t nval) {
             }
         }
     }
-    return;
 }
 
 /* Skip the following instruction if the key corresponding to the hex value currently stored in register VX is pressed */
@@ -474,7 +452,6 @@ void op_EX9E(cpu_t *cpu, uint8_t vx) {
     if (cpu->is_key_pressed[vx]) {
         cpu->program_ct += 4;
     }
-    return;
 }
 
 /* Skip the following instruction if the key corresponding to the hex value currently stored in register VX is not pressed */
@@ -482,13 +459,11 @@ void op_EXA1(cpu_t *cpu, uint8_t vx) {
     if (!(cpu->is_key_pressed[vx])) {
         cpu->program_ct += 4;
     }
-    return;
 }
 
 /* Store the current value of the delay timer in register VX */
 void op_FX07(cpu_t *cpu, uint8_t vx) {
     cpu->registers[vx] = cpu->delay_timer;
-    return;
 }
 
 /* Wait for a keypress and store the result in register VX 
@@ -506,19 +481,16 @@ void op_FX0A(cpu_t *cpu, uint8_t vx) {
     if (!any_key_pressed) {
         cpu->program_ct -= 2;
     } 
-    return;
 }
 
 /* Set the delay timer to the value of register VX */
 void op_FX15(cpu_t *cpu, uint8_t vx) {
     cpu->delay_timer = cpu->registers[vx];
-    return;
 }
 
 /* Set the sound timer to the value of register VX */
 void op_FX18(cpu_t *cpu, uint8_t vx) {
     cpu->sound_timer = cpu->registers[vx];
-    return;
 }
 
 /* Add the value stored in register VX to register I 
@@ -542,14 +514,12 @@ void op_FX1E(cpu_t *cpu, uint8_t vx) {
         cpu->registers[vf] = 1;
     }
     cpu->index += cpu->registers[vx];
-    return;
 }
 
 /* Set I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register VX 
    Note: See comments for set_font() in cpu.c for implementation details. */
 void op_FX29(cpu_t *cpu, uint8_t vx) {
     cpu->index = cpu->font_addr[cpu->registers[vx]];
-    return;
 }
 
 /* Store the binary-coded decimal equivalent of the value stored in register VX at addresses I, I + 1, and I + 2
@@ -566,7 +536,6 @@ void op_FX33(cpu_t *cpu, uint8_t vx) {
         cpu->ram[address] = digit;
         value /= 10;
     }
-    return;
 }
 
 /* Store the values of registers V0 to VX inclusive in memory starting at address I
@@ -592,7 +561,6 @@ void op_FX55(cpu_t *cpu, uint8_t vx) {
         uint16_t address = cpu->index + i;
         cpu->ram[address] = cpu->registers[i];
     }
-    return;
 }
 
 /* Fill registers V0 to VX inclusive with the values stored in memory starting at address I
@@ -605,5 +573,4 @@ void op_FX65(cpu_t *cpu, uint8_t vx) {
         uint16_t address = cpu->index + i;
         cpu->registers[i] = cpu->ram[address];
     }
-    return;
 }

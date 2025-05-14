@@ -1,5 +1,6 @@
 # General
 https://makefiletutorial.com/
+https://stackoverflow.com/questions/1490949/how-to-write-loop-in-a-makefile
 https://criterion.readthedocs.io/en/master/
 https://www.lipsum.com/ <-- for generating files of a specific size
 https://en.wikipedia.org/wiki/Binary-coded_decimal

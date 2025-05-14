@@ -1,6 +1,17 @@
 #include <criterion/criterion.h>
 #include "../include/instructions.h"
 
+cpu_t *cpu;
+
+void setup() {
+    cpu = init_cpu();
+    cr_assert_not_null(cpu, "Test failed. CPU not initalized.\n");
+}
+
+void teardown() {
+    free(cpu);
+}
+
 /* Notes: 
  * Testing whether or not decode_instruction calls the correct instruction is
    difficult, but it may be possible to do implicitly by checking for effects
@@ -12,7 +23,7 @@ void fetch_is_big_endian() {
     return;
 }
 
-void decode_invalid_opcode() {
+void decode_invalid_opcode1() {
     return;
 }
 
@@ -33,7 +44,14 @@ void op_00EE_stack_ptr_is_zero() {
 }
 
 void op_3XNN_is_equal() {
-    return;
+    uint8_t vx = 0;
+    uint8_t nnval = 123;
+    cpu->registers[vx] = nnval;
+    uint16_t pc = cpu->program_ct;
+    op_3XNN(cpu, vx, nnval);
+    uint16_t actual = cpu->program_ct;
+    uint16_t expected = pc + 2;
+    cr_assert_eq(actual, expected, "op_3XNN_is_equal() failed.\nExpected: 0x%hx\nActual: 0x%hx\n", expected, actual);
 }
 
 void op_3XNN_is_not_equal() {
@@ -57,7 +75,7 @@ void op_5XY0_is_not_equal() {
 }
 
 Test(fetch_decode, test0) { fetch_is_big_endian(); }
-Test(fetch_decode, test1) { decode_invalid_opcode(); }
+Test(fetch_decode, test1) { decode_invalid_opcode1(); }
 
 Test(op_0NNN, test0) { printf("No tests yet!\n"); }
 
@@ -71,8 +89,8 @@ Test(op_1NNN, test0) { printf("No tests yet!\n"); }
 
 Test(op_2NNN, test0) { printf("No tests yet!\n"); }
 
-Test(op_3XNN, test0) { op_3XNN_is_equal(); }
-Test(op_3XNN, test1) { op_3XNN_is_not_equal(); }
+Test(op_3XNN, test0, .init = setup, .fini = teardown) { op_3XNN_is_equal(); }
+Test(op_3XNN, test1, .init = setup, .fini = teardown) { op_3XNN_is_not_equal(); }
 
 Test(op_4XNN, test0) { op_4XNN_is_equal(); }
 Test(op_4XNN, test1) { op_4XNN_is_not_equal(); }

@@ -17,7 +17,9 @@ chip8: $(SRC_OBJS)
 # Need confirm this, but my current theory is that Criterion returns a non-zero
 # value if tests fail, so it probably doesn't matter much.
 tests: $(patsubst %, tests/test_%, $(TESTS))
-	$(foreach test, $^, ./$(test))
+	for test in $^;  do \
+		./$$test ; \
+	done
 
 tests/test_%: tests/%.o $(filter-out src/main.o, $(SRC_OBJS)) # Criterion will NOT work if a main function is included
 	$(CC) $^ -o $@ -lcriterion
